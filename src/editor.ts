@@ -50,7 +50,20 @@ export const edit = (options: Options): void => {
   });
 
   // retrieve the project swagger file for the swagger-editor
-  app.use(SWAGGER_EDITOR_LOAD_PATH, serveStatic(options.file));
+  app.use(SWAGGER_EDITOR_LOAD_PATH, (req, res, next)=>{
+        console.log(req.method + " " + req.url);
+
+        var filepath = path_1.default.resolve(req.url);
+        //samepath
+        if(path_1.default.dirname(filepath) === path_1.default.dirname(options.file)){
+            console.log("filepath " + filepath)
+            console.log("options.file " + options.file)
+            serve_static_1.default("/").call(null, req, res, next)
+        }
+        
+        
+
+    });
 
   app.use(SWAGGER_EDITOR_CONFIG_PATH, (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (req.method !== 'GET') { return next(); }
@@ -70,8 +83,8 @@ export const edit = (options: Options): void => {
 
   server.listen(port, hostname, () => {
     port = server.address().port;
-    editorUrl = util.format('http://%s:%d/?url=/oas/spec', hostname, port);
-    const editApiUrl = util.format('http://%s:%d/oas/spec', hostname, port);
+    editorUrl = util.format('http://%s:%d/?url=/oas/spec' + options.file, hostname, port);
+    const editApiUrl = util.format('http://%s:%d/oas/spec' + options.file, hostname, port);
     const dontKillMessage = '- Do not terminate this process or close this window until finished editing -';
 
     console.log(colors.green(`*** ${config.name} ***`));
