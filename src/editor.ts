@@ -50,15 +50,15 @@ export const edit = (options: Options): void => {
   });
 
   // retrieve the project swagger file for the swagger-editor
-  app.use(SWAGGER_EDITOR_LOAD_PATH, (req, res, next)=>{
+  app.use(SWAGGER_EDITOR_LOAD_PATH, (req: express.Request, res: express.Response, next: express.NextFunction) => {
         console.log(req.method + " " + req.url);
 
-        var filepath = path_1.default.resolve(req.url);
+        var filepath = path.resolve(req.url);
         //samepath
-        if(path_1.default.dirname(filepath) === path_1.default.dirname(options.file)){
+        if(path.dirname(filepath) === path.dirname(options.file)){
             console.log("filepath " + filepath)
             console.log("options.file " + options.file)
-            serve_static_1.default("/").call(null, req, res, next)
+            serve_static("/").call(null, req, res, next)
         }
         
         
