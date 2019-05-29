@@ -58,7 +58,7 @@ export const edit = (options: Options): void => {
         if(path.dirname(filepath) === path.dirname(options.file)){
             console.log("filepath " + filepath)
             console.log("options.file " + options.file)
-            serve_static("/").call(null, req, res, next)
+            serveStatic("/").call(null, req, res, next)
         }
         
         
